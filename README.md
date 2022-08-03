@@ -12,4 +12,6 @@
 - some of the meter readings are numerical but not in the full NNNNN format, assuming proceeding 0s
 - assuming tht all meter readings should be positive
 - exception handling can be built into the pipeline to handle the thrown exceptions and fail gracefully without the bootstrapping of methods
-
+- have utilised a service layer, CQRS and DDDs
+- I have exclude logging for brevity, but this is an important part of an api.  Specifically a correlation on lgging to follow a request's story
+- could have used AutoMapper for DTO mapping
