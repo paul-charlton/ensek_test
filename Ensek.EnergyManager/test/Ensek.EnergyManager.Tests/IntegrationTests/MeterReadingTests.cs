@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.AspNetCore.Mvc.Testing;
+using System.Net;
 
 namespace Ensek.EnergyManager.Tests.IntegrationTests;
 
@@ -17,12 +18,15 @@ public class MeterReadingTests : IClassFixture<WebApplicationFactory<Program>>
     /// thier energy consumption and charge them accordingly
     /// </summary>
     [Fact]
-    public void POST_MeterReadings_ReturnsSuccessResponse()
+    public async Task POST_MeterReadings_ReturnsSuccessResponse()
     {
         true.Should().BeFalse();
         // SETUP
 
         // TEST
+
+        var response = await _client.PostAsync("/meter-reading-uploads", new MultipartFormDataContent());
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
 
         // ASSERT
     }
