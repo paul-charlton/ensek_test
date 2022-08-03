@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 
 namespace Ensek.EnergyManager.Api.Commands;
 
@@ -26,8 +27,9 @@ internal class MeterReadingsInsertCommand : IMeterReadingsInsertCommand
             try
             {
                 // validate the reading
-                if (!reading.TryValidate(this, out _))
+                if (!reading.TryValidate(this, out var error))
                 {
+                    Debug.WriteLine($"[Warning] Validation error: {error}");
                     fail++;
                     continue;
                 }
@@ -40,16 +42,20 @@ internal class MeterReadingsInsertCommand : IMeterReadingsInsertCommand
 
                 if (account == null)
                 {
+                    Debug.WriteLine($"[Warning] Validation error: Account not found {reading.AccountId}");
                     fail++;
                     continue;
                 }
-                account.AddMeterReading(reading.GetParsedMeterReading(), reading.MeterReadingDateTime);
+
+                var dateTimeOffset = new DateTimeOffset(reading.MeterReadingDateTime);
+                account.AddMeterReading(reading.GetParsedMeterReading(), dateTimeOffset);
 
                 // mark success
                 success++;
             }
-            catch (ValidationException)
+            catch (ValidationException vex)
             {
+                Debug.WriteLine($"[Warning] Validation error: {vex.Message}");
                 fail++;
             }
         }

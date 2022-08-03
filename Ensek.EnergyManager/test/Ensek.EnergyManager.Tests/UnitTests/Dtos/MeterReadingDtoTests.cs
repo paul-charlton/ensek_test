@@ -7,7 +7,7 @@ public class MeterReadingDtoTests
     private const int _validReading = 6754;
     private const int _minValidReading = MeterReadingConstants.MinimumMeterReading;
     private const int _maxValidReading = MeterReadingConstants.MaximumMeterReading;
-    private static readonly DateTimeOffset _validDate = DateTimeOffset.Now;
+    private DateTime _validDate = DateTime.Now;
 
 
     [Fact]

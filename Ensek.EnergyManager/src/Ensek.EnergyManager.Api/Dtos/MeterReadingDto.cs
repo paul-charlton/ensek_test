@@ -4,22 +4,20 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Ensek.EnergyManager.Api.Dtos;
 
-[DelimitedRecord(",")]
-internal record MeterReadingDto : IValidatableObject
+internal record MeterReadingDto() : IValidatableObject
 {
-    public MeterReadingDto(string accountId, string meterReadValue, DateTimeOffset meterReadingDateTime)
+    public MeterReadingDto(string accountId, string meterReadValue, DateTime meterReadingDateTime) : this()
     {
         AccountId = accountId;
         MeterReadValue = meterReadValue;
         MeterReadingDateTime = meterReadingDateTime;
     }
+    public string AccountId { get; init; } = "";
 
-    public string AccountId { get; init; }
+    public string MeterReadValue { get; init; } = "";
 
-    public string MeterReadValue { get; init; }
+    public DateTime MeterReadingDateTime { get; init; }
 
-    [FieldConverter(ConverterKind.Date, "dd/MM/yyyy HH:mm")]
-    public DateTimeOffset MeterReadingDateTime{ get; init; }
 
     public int GetParsedMeterReading()
     {
@@ -34,7 +32,7 @@ internal record MeterReadingDto : IValidatableObject
         if (string.IsNullOrWhiteSpace(AccountId))
             yield return new ValidationResult("Account Id is invalid");
 
-        if (!int.TryParse(MeterReadValue, out var reading) )
+        if (!int.TryParse(MeterReadValue, out var reading))
             yield return new ValidationResult("Meter Reading can't be processed");
 
         if (reading < MeterReadingConstants.MinimumMeterReading)

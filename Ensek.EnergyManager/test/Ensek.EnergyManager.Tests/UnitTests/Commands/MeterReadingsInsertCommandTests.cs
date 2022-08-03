@@ -7,7 +7,7 @@ public class MeterReadingsInsertCommandTests
 {
     private readonly MeterReadingsInsertCommand _meterReadingsInsertCommand;
     private const string _testAccountId = "12345";
-
+    private DateTime _validDateTime = DateTime.Now;
 
     public MeterReadingsInsertCommandTests()
     {
@@ -28,7 +28,7 @@ public class MeterReadingsInsertCommandTests
         // SETUP
         var request = new MeterReadingsInsertRequest(new[]
         {
-            new MeterReadingDto(_testAccountId, "NONSENSE", DateTimeOffset.Now)
+            new MeterReadingDto(_testAccountId, "NONSENSE", _validDateTime)
         });
 
         // TEST
@@ -45,8 +45,8 @@ public class MeterReadingsInsertCommandTests
         // SETUP
         var request = new MeterReadingsInsertRequest(new[]
         {
-            new MeterReadingDto(_testAccountId, "NONSENSE", DateTimeOffset.Now),
-            new MeterReadingDto(_testAccountId, "12345", DateTimeOffset.Now),
+            new MeterReadingDto(_testAccountId, "NONSENSE", _validDateTime),
+            new MeterReadingDto(_testAccountId, "12345", _validDateTime),
         });
 
         // TEST

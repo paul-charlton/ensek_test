@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Ensek.EnergyManager.Api.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace Ensek.EnergyManager.Api.Domain;
 
@@ -30,6 +31,11 @@ internal class AccountEntity : IAggregateRoot
         if (!reading.TryValidate(this, out var error))
         {
             throw new ValidationException(error);
+        }
+
+        if (_meterReadings.Count >= MeterReadingConstants.ReadingsPerAccountLimit)
+        {
+            throw new ValidationException("Reached meter reading limit");
         }
 
         // add the meter reading

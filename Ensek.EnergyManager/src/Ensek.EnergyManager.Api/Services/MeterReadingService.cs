@@ -26,7 +26,7 @@ internal class MeterReadingService : IMeterReadingService
         _csvParser = csvParser;
     }
 
-    public Task<MeterReadingsInsertResponse> ProcessMeterReadingsCsvFileAsync(IFormFile formFile)
+    public async Task<MeterReadingsInsertResponse> ProcessMeterReadingsCsvFileAsync(IFormFile formFile)
     {
         if (!formFile.TryValidateFile(".csv", out var errors))
             throw new ValidationException(errors);
@@ -34,8 +34,8 @@ internal class MeterReadingService : IMeterReadingService
         // open the file and parse using csv parser
         using var stream = formFile.OpenReadStream();
         using var reader = new StreamReader(stream);
-        var meterReadings = _csvParser.ParseCsvFile<MeterReadingDto>(reader);
+        var meterReadings = await _csvParser.ParseCsvFileAsync(reader).ConfigureAwait(false);
 
-        return _meterReadingsInsertCommand.InsertMultipleMeterReadingsAsync(new MeterReadingsInsertRequest(meterReadings));
+        return await _meterReadingsInsertCommand.InsertMultipleMeterReadingsAsync(new MeterReadingsInsertRequest(meterReadings)).ConfigureAwait(false);
     }
 }

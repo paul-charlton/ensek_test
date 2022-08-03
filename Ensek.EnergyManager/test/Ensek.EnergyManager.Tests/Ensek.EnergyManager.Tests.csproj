@@ -9,6 +9,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="IntegrationTests\Resources\Meter_Reading.csv" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="IntegrationTests\Resources\Meter_Reading.csv" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="EntityFramework" Version="6.4.4" />
     <PackageReference Include="FluentAssertions" Version="6.7.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.7" />
