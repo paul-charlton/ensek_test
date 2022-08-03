@@ -1,11 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Ensek.EnergyManager.Api.Validation;
+using System.ComponentModel.DataAnnotations;
 namespace Ensek.EnergyManager.Tests.UnitTests.Dtos;
 public class MeterReadingDtoTests
 {
     private const string _validAccountId = "12345";
     private const int _validReading = 6754;
-    private const int _minValidReading = 0;
-    private const int _maxValidReading = 99999;
+    private const int _minValidReading = MeterReadingConstants.MinimumMeterReading;
+    private const int _maxValidReading = MeterReadingConstants.MaximumMeterReading;
     private static readonly DateTimeOffset _validDate = DateTimeOffset.Now;
 
 

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Ensek.EnergyManager.Api.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace Ensek.EnergyManager.Api.Domain;
 
@@ -30,7 +31,10 @@ internal class MeterReadingEntity : IValidatableObject
 
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
-        if (MeterReadingValue < 0)
-            yield return new ValidationResult("Meter Reading is negative");
+        if (MeterReadingValue < MeterReadingConstants.MinimumMeterReading)
+            yield return new ValidationResult("Meter Reading is too low");
+
+        if (MeterReadingValue > MeterReadingConstants.MaximumMeterReading)
+            yield return new ValidationResult("Meter Reading is too high");
     }
 }

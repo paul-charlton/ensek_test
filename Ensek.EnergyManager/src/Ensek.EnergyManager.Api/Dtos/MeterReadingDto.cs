@@ -1,4 +1,5 @@
-﻿using FileHelpers;
+﻿using Ensek.EnergyManager.Api.Validation;
+using FileHelpers;
 using System.ComponentModel.DataAnnotations;
 
 namespace Ensek.EnergyManager.Api.Dtos;
@@ -36,10 +37,10 @@ internal record MeterReadingDto : IValidatableObject
         if (!int.TryParse(MeterReadValue, out var reading) )
             yield return new ValidationResult("Meter Reading can't be processed");
 
-        if (reading < 0)
-            yield return new ValidationResult("Meter Reading is negative");
+        if (reading < MeterReadingConstants.MinimumMeterReading)
+            yield return new ValidationResult("Meter Reading is too low");
 
-        if (reading >= 100000)
+        if (reading > MeterReadingConstants.MaximumMeterReading)
             yield return new ValidationResult("Meter Reading is too high");
     }
 }
