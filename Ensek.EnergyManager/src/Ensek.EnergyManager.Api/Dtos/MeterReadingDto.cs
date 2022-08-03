@@ -38,5 +38,8 @@ internal record MeterReadingDto : IValidatableObject
 
         if (reading < 0)
             yield return new ValidationResult("Meter Reading is negative");
+
+        if (reading >= 100000)
+            yield return new ValidationResult("Meter Reading is too high");
     }
 }

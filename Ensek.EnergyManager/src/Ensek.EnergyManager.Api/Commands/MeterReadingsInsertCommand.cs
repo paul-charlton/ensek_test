@@ -34,7 +34,8 @@ internal class MeterReadingsInsertCommand : IMeterReadingsInsertCommand
 
                 // load the relvant account and then add the reading
                 var account = await _apiContext.Accounts
-                    .FindAsync(reading.AccountId)
+                    .Where(x=> x.AccountId == reading.AccountId)
+                    .FirstOrDefaultAsync()
                     .ConfigureAwait(false);
 
                 if (account == null)
