@@ -4,6 +4,7 @@ namespace Ensek.EnergyManager.Api;
 
 internal static class ValidationExtensions
 {
+
     public static bool TryValidate(this IValidatableObject source, object context, out string? error)
     {
         error = null;

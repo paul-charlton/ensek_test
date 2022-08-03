@@ -9,7 +9,11 @@ internal class ApiContext : DbContext
     {
     }
 
-    public DbSet<AccountEntity> Accounts { get; set; } = null!;
+    protected ApiContext()
+    {
+    }
+
+    public virtual DbSet<AccountEntity> Accounts { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
