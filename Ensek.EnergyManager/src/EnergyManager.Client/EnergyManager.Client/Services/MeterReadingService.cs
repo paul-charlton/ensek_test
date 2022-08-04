@@ -8,7 +8,7 @@ namespace EnergyManager.Client.Services
 {
     internal interface IMeterReadingService
     {
-        IObservable<string> LoadAndSendMeterReadingFile(Stream fileStream);
+        IObservable<MeterReadingResponse> LoadAndSendMeterReadingFile(Stream fileStream, string fileName);
     }
 
     internal class MeterReadingService : IMeterReadingService
@@ -24,27 +24,57 @@ namespace EnergyManager.Client.Services
             _uri = new Uri("https://10.0.2.2:7011/meter-reading-uploads");
         }
 
-        public IObservable<string> LoadAndSendMeterReadingFile(Stream fileStream)
+        public IObservable<MeterReadingResponse> LoadAndSendMeterReadingFile(Stream fileStream, string fileName)
         {
             // build the mulitpart message
             var filecontent = new StreamContent(fileStream);
             filecontent.Headers.ContentType = new MediaTypeHeaderValue("text/csv");
             var content = new MultipartFormDataContent
             {
-                {filecontent, "filename", "Meter_Reading.csv" }
+                {filecontent, "filename", fileName }
             };
 
             // send
             return _requestService
-                .PostData<string>(_uri, content)
-                .Select(_ => "Upload completed")
-                .Catch(Observable.Return("Error sending data"))
+                .PostData<MeterReadingResponse>(_uri, content)
+                .Catch(Observable.Return(MeterReadingResponse.AsError("Error sending data")))
+                .Select(x=> x!=null ? x : MeterReadingResponse.AsError("Unknown error"))
                 .Do(_ =>
                 {
                     // close the stream
                     filecontent.Dispose();
                     fileStream.Dispose();
                 });
+        }
+    }
+    internal class MeterReadingResponse
+    {
+        public static MeterReadingResponse AsError(string error) => new MeterReadingResponse(0, 0) { Error = error };
+
+        public MeterReadingResponse()
+        {
+
+        }
+
+        public MeterReadingResponse(int successfulReadings, int failedReadings)
+        {
+            SuccessfulReadings = successfulReadings;
+            FailedReadings = failedReadings;
+        }
+
+        public int SuccessfulReadings { get; set; }
+
+        public int FailedReadings { get; set; }
+
+        public string? Error { get; set; }
+
+        public bool IsSuccess => string.IsNullOrWhiteSpace(Error);
+
+        public override string ToString()
+        {
+            return IsSuccess
+                ? $"Successful readings: {SuccessfulReadings}\r\nFailed Readings: {FailedReadings}"
+                : Error!;
         }
     }
 }

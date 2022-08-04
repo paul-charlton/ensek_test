@@ -17,5 +17,6 @@
 - could have used AutoMapper for DTO mapping
 - I have assumed that the meter readings format is consistent - this could be expanded to dynamically build up columns
 - started using FileEhlpers to parse csv but it was encountering errors, there then used a stream reader and did it manually
+- tests could be massively expanded: error handling etc, correct http responses etc
 - mobile front end is tested on android
 - further enhancements on mobile could include Polly for http handling and a better UI

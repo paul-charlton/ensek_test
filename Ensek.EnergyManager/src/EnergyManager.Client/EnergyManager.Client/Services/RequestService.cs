@@ -17,7 +17,7 @@ namespace EnergyManager.Client.Services
 
     internal class RequestService : IRequestService
     {
-        private static readonly JsonSerializerOptions _serialiserOptions = new JsonSerializerOptions();
+        private static readonly JsonSerializerOptions _serialiserOptions = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true, AllowTrailingCommas = true };
 
         public HttpClientHandler GetInsecureHandler()
         {
@@ -36,7 +36,7 @@ namespace EnergyManager.Client.Services
             var client = new HttpClient(GetInsecureHandler());
             return client.PostAsync(uri, content)
                 .ToObservable()
-                .Select(x=> x.EnsureSuccessStatusCode())
+                .Select(x => x.EnsureSuccessStatusCode())
                 .SelectMany(x => Deserialize<TResponse>(x));
         }
 
