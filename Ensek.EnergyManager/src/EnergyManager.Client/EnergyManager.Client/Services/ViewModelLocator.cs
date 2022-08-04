@@ -5,7 +5,7 @@ namespace EnergyManager.Client.Services
 {
     internal static class ViewModelLocator
     {
-        private static TinyIoCContainer _container;
+        private static readonly TinyIoCContainer _container;
 
         static ViewModelLocator()
         {
@@ -13,7 +13,6 @@ namespace EnergyManager.Client.Services
 
             // services
             _container.Register<IMeterReadingService, MeterReadingService>();
-            _container.Register<IFileLoader, FileLoader>();
             _container.Register<IRequestService, RequestService>();
 
             // viewmodels

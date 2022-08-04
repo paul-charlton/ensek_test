@@ -1,10 +1,7 @@
-﻿using ReactiveUI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reactive;
+﻿using EnergyManager.Client.Services;
+using EnergyManager.Client.ViewModels;
+using ReactiveUI;
 using System.Reactive.Disposables;
-using System.Text;
 
 namespace EnergyManager.Client.Views
 {
@@ -14,11 +11,18 @@ namespace EnergyManager.Client.Views
         {
             Build();
 
-            //PopulateViewModelFromType();
+            ViewModel = ViewModelLocator.GetViewModel<MeterUploadViewModel>();
 
             _ = this.WhenActivated(disposables =>
             {
-                disposables.Add(Disposable.Empty);
+                this.BindCommand(ViewModel, x => x.SelectFileCommand, x => x._selectFileButton)
+                    .DisposeWith(disposables);
+
+                this.BindCommand(ViewModel, x => x.UploadFileCommand, x => x._uploadButton)
+                    .DisposeWith(disposables);
+
+                this.OneWayBind(ViewModel, x => x.FileResult, x => x._filename.Text, x => x?.FileName)
+                    .DisposeWith(disposables);
             });
         }
     }

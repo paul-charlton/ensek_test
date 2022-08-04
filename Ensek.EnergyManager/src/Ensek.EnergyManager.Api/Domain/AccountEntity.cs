@@ -6,6 +6,7 @@ namespace Ensek.EnergyManager.Api.Domain;
 internal class AccountEntity : IAggregateRoot
 {
     private readonly List<MeterReadingEntity> _meterReadings = new();
+    private  int _addedCount = 0;
 
     private AccountEntity()
     {
@@ -33,7 +34,7 @@ internal class AccountEntity : IAggregateRoot
             throw new ValidationException(error);
         }
 
-        if (_meterReadings.Count >= MeterReadingConstants.ReadingsPerAccountLimit)
+        if (++_addedCount > MeterReadingConstants.ReadingsPerAccountLimit)
         {
             throw new ValidationException("Reached meter reading limit");
         }

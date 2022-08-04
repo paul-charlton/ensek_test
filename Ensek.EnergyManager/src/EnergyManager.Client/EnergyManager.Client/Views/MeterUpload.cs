@@ -1,29 +1,35 @@
 ﻿using EnergyManager.Client.ViewModels;
 using ReactiveUI.XamForms;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Xamarin.CommunityToolkit.Markup;
 using Xamarin.Forms;
-using static Xamarin.CommunityToolkit.Markup.GridRowsColumns;
 
 namespace EnergyManager.Client.Views
 {
     internal partial class MeterUpload : ReactiveContentPage<MeterUploadViewModel>
     {
+        private Button _selectFileButton = null!, _uploadButton = null!;
+        private Label _filename = null!;
+
         private void Build()
         {
-            var rowcnt = 0;
-            Content = new Grid
+            Content = new StackLayout
             {
-                RowDefinitions = Rows.Define(/*BaseStyles.ProfileHeaderGridLength*/),
+                Orientation = StackOrientation.Vertical,
+                VerticalOptions = LayoutOptions.Center,
 
                 Children =
                 {
-                    // profile header
-                    //new ProfileTitleView{Title = "", ShowAvatar = false}
-                    //.Row(rowcnt++),
+                    // select file button
+                    new Button{Text = "Select File", TextTransform = TextTransform.None}
+                    .Assign(out _selectFileButton),
+
+                    // file name
+                    new Label()
+                    .Assign(out _filename),
+
+                    // upload file button
+                    new Button{Text = "Upload", TextTransform = TextTransform.None}
+                    .Assign(out _uploadButton),
                 }
             };
         }

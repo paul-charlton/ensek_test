@@ -1,8 +1,4 @@
-﻿using EnergyManager.Client.Services;
-using EnergyManager.Client.Views;
-using System;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
+﻿using Xamarin.Forms;
 
 namespace EnergyManager.Client
 {
@@ -13,7 +9,6 @@ namespace EnergyManager.Client
         {
             InitializeComponent();
 
-            DependencyService.Register<MockDataStore>();
             MainPage = new AppShell();
         }
 
